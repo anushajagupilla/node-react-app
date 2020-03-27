@@ -1,0 +1,21 @@
+{
+  "name": "takehomerest",
+  "version": "0.0.1",
+  "private": true,
+  "main": "app.js",
+  "scripts": {
+    "start:dev": "nodemon app",
+    "start:prod": "node app"
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "cors": "^2.8.5",
+    "express": "~4.16.1",
+    "node-cache": "^5.1.0",
+    "uuid": "^7.0.2",
+    "uuidv4": "^6.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
