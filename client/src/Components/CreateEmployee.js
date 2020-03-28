@@ -1,13 +1,11 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import axios from 'axios';
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
+import { Button, Form, Alert, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
 import EmployeeList from './EmployeeList';
 
 class CreateEmployee extends React.Component {
 	constructor() {
 		super();
-		// let test = this.test;
 		this.state = {
 			id: null,
 			res: [],
@@ -15,7 +13,9 @@ class CreateEmployee extends React.Component {
 			lastName: "",
 			hireDate: "",
 			role: "CEO",
-			favJoke: ""
+			favJoke: "",
+			showError: false,
+			errMsg: ""
 		};
 	}
 	getEmpList = () => {
@@ -23,8 +23,6 @@ class CreateEmployee extends React.Component {
 			.then(response => {
 				// handle success
 				this.setState({empList: response.data.data});
-				console.log("============ EMP",response.data.data);
-				// this.test = response;
 			})
 			.catch(function (error) {
 				// handle error
@@ -32,14 +30,10 @@ class CreateEmployee extends React.Component {
 			});
 	}
 	componentDidMount() {
-		// axios.get('https://icanhazdadjoke.com')
-		// axios.get('https://ron-swanson-quotes.herokuapp.com/v2/quotes')
 		axios.get('https://quotes.rest/qod')
 			.then(response => {
 				// handle success
 				this.setState({res: response});
-				// console.log("============",response);
-				// this.test = response;
 			})
 			.catch(function (error) {
 				// handle error
@@ -51,7 +45,6 @@ class CreateEmployee extends React.Component {
 		this.setState({[e.target.name]: e.target.value});
 	}
 	empSubmit = (e) => {
-		// this.props.saveEmp(this.state)
 		e.preventDefault();
 		console.log("ON SUBMIT", this.state)
 		let stateObj = this.state;
@@ -75,10 +68,12 @@ class CreateEmployee extends React.Component {
 						lastName: "",
 						hireDate: "",
 						role: "CEO",
-						favJoke: ""
+						favJoke: "",
+						showError: false,
+						errMsg: ""
 					})
-				}).catch(function (error) {
-					console.log(error);
+				}).catch( (error) => {
+					this.setState({showError: true, errMsg: error.response.data.message})
 				});
 		} else {
 			axios.post('http://localhost:3001/api/employees', 
@@ -100,10 +95,12 @@ class CreateEmployee extends React.Component {
 						lastName: "",
 						hireDate: "",
 						role: "CEO",
-						favJoke: ""
+						favJoke: "",
+						showError: false,
+						errMsg: ""
 					})
-				}).catch(function (error) {
-					console.log(error);
+				}).catch( (error) => {
+					this.setState({showError: true, errMsg: error.response.data.message})
 				});
 		}
 	}
@@ -142,10 +139,15 @@ class CreateEmployee extends React.Component {
 				console.log(error);
 			});
 	}
+	onDismiss = () => {
+		this.setState({showError: false})
+	}
 	render() {
-		// console.log("@@@@@@@@@", this.state.res)
 		return (
 			<Container>
+				<Alert color="danger" isOpen={this.state.showError} toggle={this.onDismiss}>
+					{this.state.errMsg}
+				</Alert>
 				<Row>
 					<Col className="form-container" xs="6">
 						<h2>Create Employee</h2>
