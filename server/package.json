@@ -10,7 +10,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "cors": "^2.8.5",
-    "express": "~4.16.1",
+    "express": "~4.17.3",
     "node-cache": "^5.1.0",
     "uuid": "^7.0.2",
     "uuidv4": "^6.0.6"
